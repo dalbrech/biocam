@@ -1,11 +1,11 @@
 sudo apt update -y
 sudo apt-get update -y
 sudo apt-get upgrade -y
-sudo cp -av ./motioneye-mqp/motioneye/ /etc/
-sudo cp -av ./motioneye-mqp/sensorexamples/ /home/pi
-sudo cp -av ./motioneye-mqp/Timelapse/ /home/pi
-sudo cp -av ./motioneye-mqp/RaspberryPi/ /home/pi
-sudo cp -av ./motioneye-mqp/dt-blob.dts /home/pi
+sudo cp -av ./biocam/motioneye/ /etc/
+sudo cp -av ./biocam/sensorexamples/ /home/pi
+sudo cp -av ./biocam/Timelapse/ /home/pi
+sudo cp -av ./biocam/RaspberryPi/ /home/pi
+sudo cp -av ./biocam/dt-blob.dts /home/pi
 sudo apt-get install -y ffmpeg libmariadb3 libpq5 libmicrohttpd12
 sudo wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/pi_buster_motion_4.2.2-1_armhf.deb
 sudo dpkg -i pi_buster_motion_4.2.2-1_armhf.deb
