@@ -1,0 +1,27 @@
+#!/bin/sh
+SHUTTER=1;
+
+
+if [ -e "/etc/motioneye/camera-2.shutter" ] ; then
+    SHUTTER=$(cat "/etc/motioneye/camera-2.shutter")
+fi
+
+
+#SHUTTER=$((SHUTTER+1))
+
+
+#temp=`echo "$SHUTTER + 0.1" | bc`
+#SHUTTER=$temp
+SHUTTER=`echo "$SHUTTER +0.1" | bc`
+if [ $(echo "$SHUTTER > 6"|bc -l) -eq 1 ]; then SHUTTER=6; fi
+
+
+echo $SHUTTER > "/etc/motioneye/camera-2.shutter"
+
+
+SHUTTERTXT=$( printf "0x%x" $SHUTTER )
+
+
+echo "shutter speed: $SHUTTER ($SHUTTERTXT)"
+curl "http://localhost:7999/2/config/set?text_left=Shutter: $SHUTTER s"
+
