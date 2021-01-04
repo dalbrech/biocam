@@ -1,2 +1,2 @@
-# piscope
-internet-connected, remote-controlled biomonitoring system with wide/high-res microscope, data logging, and timelapse recording
+# biocam
+internet-connected, remote-controlled biomonitoring system with widefield/high-res microscope, data logging, and timelapse recording
