@@ -1,0 +1,39 @@
+#!/bin/sh
+MODE=1;
+GPIO=16
+GPIO2=21
+
+if [ -e "/etc/motioneye/light.mode" ] ; then
+    MODE=$(cat "/etc/motioneye/light.mode")
+fi
+
+
+
+#if mode is manual, set it to flashing
+#else set it to manual
+if [ "$MODE" -eq 0 ] ; then
+	#set pin 21 to input to prevent short circuit
+	test -e /sys/class/gpio/gpio$GPIO2 || echo $GPIO2 > /sys/class/gpio/export
+	echo in > /sys/class/gpio/gpio$GPIO2/direction;
+	#set pin16 to output so LED can flash
+	test -e /sys/class/gpio/gpio$GPIO || echo $GPIO > /sys/class/gpio/export
+	echo out > /sys/class/gpio/gpio$GPIO/direction;
+	#set mode to flashing
+	MODE=1
+	echo $MODE > "/etc/motioneye/light.mode"
+	curl "http://localhost:7999/1/config/set?text_left=Light Mode: Flashing" 
+else
+	#set pin 16 to input to stop flashing
+	test -e /sys/class/gpio/gpio$GPIO || echo $GPIO > /sys/class/gpio/export
+	echo in > /sys/class/gpio/gpio$GPIO/direction 
+	#turn pin 21 off, make LED complete off
+	test -e /sys/class/gpio/gpio$GPIO2 || echo $GPIO2 > /sys/class/gpio/export
+	echo out > /sys/class/gpio/gpio$GPIO2/direction;
+	echo 0 > /sys/class/gpio/gpio$GPIO2/value
+	#set mode to manual
+	MODE=0
+	echo $MODE > "/etc/motioneye/light.mode";
+	curl "http://localhost:7999/1/config/set?text_left=Light Mode: Manual"
+fi
+
+

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+GPIO=21
+
+#get mode
+MODE=1
+if [ -e "/etc/motioneye/light.mode" ] ; then
+    MODE=$(cat "/etc/motioneye/light.mode")
+fi
+
+test -e /sys/class/gpio/gpio$GPIO || echo $GPIO > /sys/class/gpio/export
+
+#if light is flashing, do not allow pin 21 to go low, or else short circuit!
+if [ "$MODE" -eq 1 ] ; then
+	#echo out > /sys/class/gpio/gpio$GPIO/direction;
+	#echo 1 > /sys/class/gpio/gpio$GPIO/value
+	curl "http://localhost:7999/1/config/set?text_left=Light not manual."
+else
+echo out > /sys/class/gpio/gpio$GPIO/direction
+echo 0 > /sys/class/gpio/gpio$GPIO/value;
+
+fi
+

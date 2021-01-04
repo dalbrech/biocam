@@ -1,0 +1,20 @@
+#!/bin/sh
+FOCUS=63;
+
+if [ -e "/etc/motioneye/camera-1.focus" ] ; then
+    FOCUS=$(cat "/etc/motioneye/camera-1.focus")
+fi
+
+FOCUS=$((FOCUS-3))
+
+if [ "$FOCUS" -lt 0 ] ; then FOCUS=0; fi
+
+echo $FOCUS > "/etc/motioneye/camera-1.focus"
+
+FOCUSTXT=$( printf "0x%x" $FOCUS )
+
+echo "focus level: $FOCUS ($FOCUSTXT)"
+curl "http://localhost:7999/1/config/set?text_left=Focus: $FOCUS"
+
+i2cset -y 0 0x0c $FOCUSTXT $FOCUSTXT
+

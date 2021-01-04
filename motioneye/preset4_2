@@ -1,0 +1,24 @@
+#!/bin/sh
+TIME=1;
+
+
+if [ -e "/etc/motioneye/camera-2.tlduration" ] ; then
+    TIME=$(cat "/etc/motioneye/camera-2.tlduration")
+fi
+
+
+TIME=$((TIME+1))
+
+
+#if [ "$TIME" -gt 72 ] ; then TIME=72; fi
+
+
+echo $TIME > "/etc/motioneye/camera-2.tlduration"
+
+
+TIMETXT=$( printf "0x%x" $TIME )
+
+
+echo "Timelapse duration: $TIME ($TIMETXT)"
+curl "http://localhost:7999/2/config/set?text_left=Timelapse Duration: $TIME hrs"
+

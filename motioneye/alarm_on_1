@@ -1,0 +1,4 @@
+#!/bin/bash
+
+curl "http://localhost:7999/1/config/set?snapshot_interval=60"
+
